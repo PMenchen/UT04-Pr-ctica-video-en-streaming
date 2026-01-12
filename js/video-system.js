@@ -579,7 +579,59 @@ let VideoSystem = (function(){
                 return new Category(name, description);
             }
 
+
+            // ======== MÉTODOS DE BÚSQUEDA Y FILTRADO ==========
+
+            findProductions(filterFn, sortFn = null){
+                let result = this.#productions.filter(filterFn);
+
+                if (sortFn) result = result.sort(sortFn);
+
+                return {
+                    *[Symbol.iterator](){
+                        for (let production of result) {
+                            yield production;
+                        }
+                    }
+                }
+            }
+
+            filterProductionsInCategory (category, filterFn = null, sortFn = null){
+                if (!category) throw new InvalidParameterException("category");
+
+                let categoryProds = this.#productionCategories.get(category);
+                if (!categoryProds) throw new CategoryNotExistsException(category);
+
+                let result = filterFn ? categoryProds.filter(filterFn) : [...categoryProds];
+
+                if (sortFn) result = result.sort(sortFn);
+
+                return{
+                    *[Symbol.iterator](){
+                        for (let production of result){
+                            yield production;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        return new VideoSystem ("Video en streaming");
+    }
+
+    return {
+        getInstance: (name = "VideoSystem") => {
+            if (!instance) {
+                instance = createInstance();
+                if (name !== "VideoSystem") {
+                    instance.name = name;
+                }
+            }
+            return instance;
         }
     }
-});
+})();
 
+export default VideoSystem;
