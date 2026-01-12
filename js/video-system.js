@@ -466,7 +466,71 @@ let VideoSystem = (function(){
                 return actorProds.length;
             }
 
+
+            // ========== MÉTODOS DE CONSULTA ===========
+
+            getCast(production) {
+                if (!production) throw new InvalidParameterException("production");
+
+                let cast = [];
+                for (let [actor, productions] of this.#productionActors.entries()) {
+                    let item = productions.find((p) => p.production.title === production.title);
+                    if (item) {
+                        cast.push({ actor, character: item.character });
+                    }
+                }
+
+                return {
+                    *[Symbol.iterator]() {
+                        for (let item of cast) {
+                            yield item;
+                        }
+                    }
+                }
+            }
+
+            getProductionsDirector(person) {
+                if (!person) throw new InvalidParameterException("person");
+
+                let productions = this.#productionDirectors.get(person) || [];
+
+                return {
+                    *[Symbol.iterator]() {
+                        for (let production of productions) {
+                            yield production;
+                        }
+                    }
+                }
+            }
+
+            getProductionsActor(person) {
+                if (!person) throw new InvalidParameterException("person");
+
+                let productions = this.#productionActors.get(person) || [];
+
+                return {
+                    *[Symbol.iterator]() {
+                        for (let item of productions) {
+                            yield item;
+                        }
+                    }
+                }
+            }
+
+            getProductionsCategory(category) {
+                if (!category) throw new InvalidParameterException("category");
+
+                let productions = this.#productionCategories.get(category) || [];
+
+                return {
+                    *[Symbol.iterator]() {
+                        for (let production of productions) {
+                            yield production;
+                        }
+                    }
+                }
+            }
+
         }
     }
 });
-
