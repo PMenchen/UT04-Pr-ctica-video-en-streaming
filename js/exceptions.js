@@ -60,6 +60,16 @@ InvalidValueException.prototype = Object.create(BaseException.prototype);
 InvalidValueException.prototype.constructor = InvalidValueException;
 
 
+function InvalidParameterException(param, value) {
+	let instance = BaseException.call(this, "Error: El parámetro: " + param + " no es válido");
+	instance.name = "InvalidParameterException";
+	instance.param = param;
+	instance.value = value;
+	return instance;
+}
+InvalidParameterException.prototype = Object.create(BaseException.prototype);
+InvalidParameterException.prototype.constructor = InvalidParameterException;
+
 function CategoryExistsException(category){
     let instance = BaseException.call(this, `Error: La categoría ${category.name} ya existe en el sistema`);
     instance.name = "CategoryExistsException";
@@ -146,3 +156,21 @@ function PersonNotExistsException(person){
 }
 PersonNotExistsException.prototype = Object.create(BaseException.prototype);
 PersonNotExistsException.prototype.constructor = PersonNotExistsException;
+
+
+export {
+    BaseException,
+    InvalidAccessConstructorException,
+    InvalidValueException,
+    InvalidParameterException,
+    EmptyValueException,
+    RequiredValueException,
+    CategoryExistsException,
+    CategoryNotExistsException,
+    UserExistsException,
+    UserNotExistsException,
+    ProductionExistsException,
+    ProductionNotExistsException,
+    PersonExistsException,
+    PersonNotExistsException
+}
