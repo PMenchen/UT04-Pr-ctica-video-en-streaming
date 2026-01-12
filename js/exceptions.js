@@ -47,3 +47,14 @@ function RequiredValueException(param){
 }
 RequiredValueException.prototype = Object.create(BaseException.prototype);
 RequiredValueException.prototype.constructor = RequiredValueException;
+
+//Excepción de valor inválido
+function InvalidValueException(param, expected, value) {
+	let instance = BaseException.call(this, "Error: El parámetro: " + param + " tiene un valor no válido, debe ser un " + expected);
+	instance.name = "InvalidValueException";
+	instance.param = param;
+	instance.value = value;
+	return instance;
+}
+InvalidValueException.prototype = Object.create(BaseException.prototype);
+InvalidValueException.prototype.constructor = InvalidValueException;
