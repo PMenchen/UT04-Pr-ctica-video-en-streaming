@@ -531,6 +531,55 @@ let VideoSystem = (function(){
                 }
             }
 
+
+            // =========== MÉTODOS CREATE =================
+
+            createPerson(name, lastname1, born, lastname2 = "", picture = "") {
+                // Buscar si ya existe
+                let existing =
+                    this.#actors.find((p) => p.name === name && p.lastname1 === lastname1) ||
+                    this.#directors.find((p) => p.name === name && p.lastname1 === lastname1);
+
+                if (existing) return existing;
+
+                // Crear nueva persona
+                return new Person(name, lastname1, born, lastname2, picture);
+            }
+
+            createProduction(type, title, publication, nationality = "", synopsis = "", image = ""){
+                //Buscar si ya existe
+                let exists = this.#productions.find((p) => p.title === title);
+                if (exists) return exists;
+
+                //Crear nueva producción según el tipo
+                if (type === "movie") {
+                    return new Movie(title, publication, nationality, synopsis, image);
+                } else if (type === "serie") {
+                    return new Serie (title, publication, nationality, synopsis, image);
+                } else {
+                    throw new Error ("Tipo de producción no válido");
+                }
+            }
+
+            createUser(username, email, password) {
+                // Buscar si ya existe
+                let exists = this.#users.find((u) => u.username === username);
+                if (exists) return exists;
+
+                // Crear nuevo usuario
+                return new User(username, email, password);
+            }
+
+            createCategory(name, description = "") {
+                // Buscar si ya existe
+                let exists = this.#categories.find((c) => c.name === name);
+                if (exists) return exists;
+
+                // Crear nueva categoría
+                return new Category(name, description);
+            }
+
         }
     }
 });
+
