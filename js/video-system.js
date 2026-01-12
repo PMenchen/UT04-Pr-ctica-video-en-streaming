@@ -182,7 +182,7 @@ let VideoSystem = (function(){
             }
 
             addProduction(...productions) {
-                for (const production of productions) {
+                for (let production of productions) {
                     if (!production || !(production instanceof Production)) throw new InvalidParameterException("production");
 
                     // Verificar si ya existe
@@ -226,6 +226,244 @@ let VideoSystem = (function(){
                     this.#productions.splice(index, 1);
                 }
                 return this.#productions.length;
+            }
+
+            
+            // ========== MÉTODOS DE ACTORES ==========
+
+            get actors() {
+                let self = this;
+                return {
+                    *[Symbol.iterator]() {
+                        for (let actor of self.#actors) {
+                            yield actor;
+                        }
+                    }
+                }
+            }
+
+            addActor(...actors) {
+                for (let actor of actors) {
+                    if (!actor || !(actor instanceof Person)) throw new InvalidParameterException("actor");
+
+                    let exists = this.#actors.some((a) => a.name === actor.name && a.lastname1 === actor.lastname1);
+                    if (exists) {
+                        throw new PersonExistsException(actor);
+                    }
+
+                    this.#actors.push(actor);
+                }
+                return this.#actors.length;
+            }
+
+            removeActor(...actors) {
+                for (let actor of actors) {
+                    if (!actor || !(actor instanceof Person)) throw new InvalidParameterException("actor");
+
+                    let index = this.#actors.findIndex((a) => a.name === actor.name && a.lastname1 === actor.lastname1);
+                    if (index === -1) {
+                        throw new PersonNotExistsException(actor);
+                    }
+
+                    // Eliminar relaciones
+                    this.#productionActors.delete(actor);
+
+                    this.#actors.splice(index, 1);
+                }
+                return this.#actors.length;
+            }
+
+
+            // ============ MÉTODOS DE DIRECTORES ====================
+
+            get directors() {
+                let self = this;
+                return {
+                    *[Symbol.iterator]() {
+                        for (let director of self.#directors) {
+                            yield director;
+                        }
+                    }
+                }
+            }
+
+            addDirector(...directors){
+                for (let director of directors){
+                    if (!director || !(director instanceof Person)) throw new InvalidParameterException("director");
+
+                    let exists = this.#directors.some((d) => d.name === director.name && d.lastname1 === director.lastname1);
+                    if (exists) throw new PersonExistsException(director);
+
+                    this.#directors.push(director);
+                }
+
+                return this.#directors.length;
+            }
+
+            removeDirector(...directors) {
+                for (let director of directors) {
+                    if (!director || !(director instanceof Person)) throw new InvalidParameterException("director");
+
+                    let index = this.#directors.findIndex((d) => d.name === director.name && d.lastname1 === director.lastname1);
+                    if (index === -1) throw new PersonNotExistsException(director);
+
+                    // Eliminar relaciones
+                    this.#productionDirectors.delete(director);
+
+                    this.#directors.splice(index, 1);
+                }
+                return this.#directors.length;
+            }
+
+
+            // ========== MÉTODOS DE ASIGNACIÓN ==========
+
+            assignCategory(category, ...productions){
+                if (!category) throw new EmptyValueException("category");
+
+                if (productions.length === 0) throw new InvalidParameterException("production");
+
+                //añadir categoría si no existe
+                if (!this.#categories.some((c) => c.name === category.name)) {
+                    this.addCategory(category);
+                }
+
+                if (!this.#productionCategories.has(category)) {
+                    this.#productionCategories.set(category, []);
+                }
+
+                for (let production of productions) {
+                    if (!production) throw new InvalidParameterException("production");
+
+                    //añadir producción si no existe
+                    if (!this.#productions.some((p) => p.title === production.title)) {
+                        this.addProduction(production);
+                    }
+
+                    // Evitar duplicados
+                    let categoryProds = this.#productionCategories.get(category);
+                    if (!categoryProds.some((p) => p.title === production.title)) {
+                        categoryProds.push(production);
+                    }
+                }
+
+                return this.#productionCategories.get(category).length;
+                
+            }
+
+            deassignCategory(category, ...productions) {
+                if (!category) throw new InvalidParameterException("category");
+                if (productions.length === 0) throw new InvalidParameterException("production");
+
+                if (!this.#productionCategories.has(category)) return 0;
+
+                let categoryProds = this.#productionCategories.get(category);
+                for (let production of productions) {
+                    if (!production) throw new InvalidParameterException("production");
+
+                    let index = categoryProds.findIndex((p) => p.title === production.title);
+                    if (index !== -1) {
+                        categoryProds.splice(index, 1);
+                    }
+                }
+
+                return categoryProds.length;
+            }
+
+            assignDirector(person, ...productions) {
+                if (!person) throw new InvalidParameterException("person");
+                if (productions.length === 0) throw new InvalidParameterException("production");
+
+                // Añadir director si no existe
+                if (!this.#directors.some((d) => d.name === person.name && d.lastname1 === person.lastname1)) {
+                    this.addDirector(person);
+                }
+
+                if (!this.#productionDirectors.has(person)) {
+                    this.#productionDirectors.set(person, []);
+                }
+
+                for (let production of productions) {
+                    if (!production) throw new InvalidParameterException("production");
+
+                    // Añadir producción si no existe
+                    if (!this.#productions.some((p) => p.title === production.title)) {
+                        this.addProduction(production);
+                    }
+
+                    // Evitar duplicados
+                    let directorProds = this.#productionDirectors.get(person);
+                    if (!directorProds.some((p) => p.title === production.title)) {
+                        directorProds.push(production);
+                    }
+                }
+
+                return this.#productionDirectors.get(person).length;
+            }
+
+            deassignDirector(person, ...productions) {
+                if (!person) throw new InvalidParameterException("person");
+                if (productions.length === 0) throw new InvalidParameterException("production");
+
+                if (!this.#productionDirectors.has(person)) return 0;
+
+                let directorProds = this.#productionDirectors.get(person);
+                for (let production of productions) {
+                    if (!production) throw new InvalidParameterException("production");
+
+                    let index = directorProds.findIndex((p) => p.title === production.title);
+                    if (index !== -1) {
+                        directorProds.splice(index, 1);
+                    }
+                }
+
+                return directorProds.length;
+            }
+
+            assignActor(person, production, character = "") {
+                if (!person) throw new InvalidParameterException("person");
+                if (!production) throw new InvalidParameterException("production");
+
+                // Añadir actor si no existe
+                if (!this.#actors.some((a) => a.name === person.name && a.lastname1 === person.lastname1)) {
+                    this.addActor(person);
+                }
+
+                // Añadir producción si no existe
+                if (!this.#productions.some((p) => p.title === production.title)) {
+                    this.addProduction(production);
+                }
+
+                if (!this.#productionActors.has(person)) {
+                    this.#productionActors.set(person, []);
+                }
+
+                // Evitar duplicados
+                let actorProds = this.#productionActors.get(person);
+                if (!actorProds.some((item) => item.production.title === production.title)) {
+                    actorProds.push({ production, character });
+                }
+
+                return actorProds.length;
+            }
+
+            deassignActor(person, ...productions) {
+                if (!person) throw new InvalidParameterException("person");
+                if (productions.length === 0) throw new InvalidParameterException("production");
+
+                if (!this.#productionActors.has(person)) return 0;
+
+                let actorProds = this.#productionActors.get(person);
+                for (let production of productions) {
+                    if (!production) throw new InvalidParameterException("production");
+
+                    let index = actorProds.findIndex((item) => item.production.title === production.title);
+                    if (index !== -1) {
+                        actorProds.splice(index, 1);
+                    }
+                }
+
+                return actorProds.length;
             }
 
         }
