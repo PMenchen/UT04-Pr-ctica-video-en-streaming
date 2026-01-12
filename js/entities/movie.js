@@ -27,7 +27,8 @@ class Movie extends Production {
     }
 
     set locations(value){
-        if (!Array.isArray(value)) throw new Error("Las ubicaciones deben ser un array");
+        if (!Array.isArray(value)) 
+            throw new InvalidValueException("locations", "array", value);
 
         this.#locations = value;
     }

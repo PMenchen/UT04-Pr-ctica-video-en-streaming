@@ -58,7 +58,8 @@ class Person {
 
     set born(value) {
         if (!value) throw new EmptyValueException("born");
-        if (!(value instanceof Date)) throw new Error("La fecha de nacimiento debe ser un objeto Date");
+        if (!(value instanceof Date)) 
+            throw new InvalidValueException("born", "objeto Date", value);
         this.#born = value;
     }
 

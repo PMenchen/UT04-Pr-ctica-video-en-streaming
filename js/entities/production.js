@@ -16,7 +16,7 @@ class Production{
         if (!title) throw new RequiredValueException("title");
         if (!publication) throw new RequiredValueException("publication");
         if (!(publication instanceof Date)) {
-            throw new Error("La fecha de publicación debe ser un objeto Date");
+            throw new InvalidValueException("publications", "objeto Date", value);
         }
 
         this.#title = title;
@@ -59,7 +59,7 @@ class Production{
 
     set publication(value) {
         if (!(value instanceof Date)) {
-            throw new Error("La fecha de publicación debe ser un objeto Date");
+            throw new InvalidValueException("publications", "objeto Date", value);
         }
         this.#publication = value;
     }
