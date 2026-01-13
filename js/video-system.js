@@ -13,8 +13,7 @@ import{
     ProductionExistsException,
     ProductionNotExistsException,
     PersonExistsException,
-    PersonNotExistsException,
-    InvalidParameterException
+    PersonNotExistsException
 } from "./exceptions.js";
 
 import Person from "./entities/person.js";

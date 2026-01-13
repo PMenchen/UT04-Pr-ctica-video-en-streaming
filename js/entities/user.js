@@ -1,5 +1,21 @@
 "use strict";
 
+import{
+    InvalidAccessConstructorException,
+    InvalidValueException,
+    EmptyValueException,
+    InvalidParameterException,
+    RequiredValueException,
+    CategoryExistsException,
+    CategoryNotExistsException,
+    UserExistsException,
+    UserNotExistsException,
+    ProductionExistsException,
+    ProductionNotExistsException,
+    PersonExistsException,
+    PersonNotExistsException
+} from "../exceptions.js";
+
 class User {
     #username;
     #email;

@@ -1,6 +1,22 @@
 "use strict";
 
-import Production from "./production";
+import{
+    InvalidAccessConstructorException,
+    InvalidValueException,
+    EmptyValueException,
+    InvalidParameterException,
+    RequiredValueException,
+    CategoryExistsException,
+    CategoryNotExistsException,
+    UserExistsException,
+    UserNotExistsException,
+    ProductionExistsException,
+    ProductionNotExistsException,
+    PersonExistsException,
+    PersonNotExistsException
+} from "../exceptions.js";
+
+import Production from "./production.js";
 
 class Movie extends Production {
     #resource;
