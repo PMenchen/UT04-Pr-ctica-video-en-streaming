@@ -11,7 +11,8 @@ class Person {
         if (!name) throw new RequiredValueException("name");
         if (!lastname1) throw new RequiredValueException("lastname1");
         if (!born) throw new RequiredValueException("born");
-        if (!(born instanceof Date)) throw new Error("La fecha de nacimiento debe ser un objeto Date");
+        if (!(born instanceof Date)) 
+            throw new InvalidValueException("born", "objeto Date", born);
 
         this.#name = name;
         this.#lastname1 = lastname1;

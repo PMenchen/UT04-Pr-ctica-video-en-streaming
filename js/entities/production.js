@@ -16,7 +16,7 @@ class Production{
         if (!title) throw new RequiredValueException("title");
         if (!publication) throw new RequiredValueException("publication");
         if (!(publication instanceof Date)) {
-            throw new InvalidValueException("publications", "objeto Date", value);
+            throw new InvalidValueException("publications", "objeto Date", publication);
         }
 
         this.#title = title;

@@ -1,10 +1,10 @@
 "use strict";
 
 import{
-    BaseException,
     InvalidAccessConstructorException,
     InvalidValueException,
     EmptyValueException,
+    InvalidParameterException,
     RequiredValueException,
     CategoryExistsException,
     CategoryNotExistsException,
@@ -26,7 +26,7 @@ import Serie from "./entities/serie.js";
 import User from "./entities/user.js";
 import Coordinates from "./entities/coordinate.js";
 
-let VideoSystem = (function(){
+let VideoSystem  = (() => {
     let instance;
 
     function createInstance() {

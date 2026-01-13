@@ -6,7 +6,7 @@ class Resource {
     #link;
 
     constructor(duration, link) {
-        if (!duration) throw new RequiredValueException("duration");
+        if (duration === undefined || duration === null) throw new RequiredValueException("duration");
         if(typeof duration !== "number" || Number.isNaN(duration)) throw new InvalidValueException("duration", "number", duration);
         if (!link) throw new RequiredValueException("link");
         
@@ -25,9 +25,9 @@ class Resource {
 
     // Setters
     set duration(value) {
-        if (!value) throw new EmptyValueException("duration");
-        if (Number.isNaN(duration) || typeof value !== "number") {
-            throw new InvalidValueException("duration", "number", duration);
+        if (value === undefined || value === null) throw new EmptyValueException("duration");
+        if (Number.isNaN(value) || typeof value !== "number") {
+            throw new InvalidValueException("duration", "number", value);
         }
         this.#duration = value;
     }
