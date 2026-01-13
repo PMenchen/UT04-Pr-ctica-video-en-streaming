@@ -16,6 +16,10 @@ import{
     PersonNotExistsException
 } from "../exceptions.js";
 
+/**
+ * Clase que representa una persona (actor o director)
+ * Almacena información personal y foto
+ */
 class Person {
     #name;
     #lastname1;
@@ -23,6 +27,14 @@ class Person {
     #born;
     #picture;
 
+    /**
+     * Constructor de la clase Person
+     * @param {string} name - Nombre (obligatorio)
+     * @param {string} lastname1 - Primer apellido (obligatorio)
+     * @param {string} lastname2 - Segundo apellido (opcional)
+     * @param {Date} born - Fecha de nacimiento (obligatorio)
+     * @param {string} picture - URL de la foto (opcional)
+     */
     constructor(name, lastname1, lastname2 = " ", born, picture = " "){
         if (!name) throw new RequiredValueException("name");
         if (!lastname1) throw new RequiredValueException("lastname1");
@@ -84,6 +96,10 @@ class Person {
         this.#picture = value;
     }
 
+    /**
+     * Representación en cadena de texto de la persona
+     * @returns {string} Cadena formateada con nombre, apellidos y fecha de nacimiento
+     */
     toString() {
         return `Persona: ${this.#name} - ${this.#lastname1}${this.#lastname2 ? " - " + this.#lastname2 : ""} - (${this.#born.toLocaleDateString()})`;
     }

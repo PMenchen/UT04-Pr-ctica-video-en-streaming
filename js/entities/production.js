@@ -16,6 +16,11 @@ import{
     PersonNotExistsException
 } from "../exceptions.js";
 
+/**
+ * Clase abstracta que representa una producción audiovisual
+ * Clase base para Movie y Serie
+ * No se puede instanciar directamente
+ */
 class Production{
     #title;
     #nationality;
@@ -23,6 +28,14 @@ class Production{
     #synopsis;
     #image;
 
+    /**
+     * Constructor de la clase Production
+     * @param {string} title - Título de la producción (obligatorio)
+     * @param {Date} publication - Fecha de publicación (obligatorio)
+     * @param {string} nationality - Nacionalidad de la producción (opcional)
+     * @param {string} synopsis - Sinopsis de la producción (opcional)
+     * @param {string} image - URL de la imagen (opcional)
+     */
     constructor(title, publication, nationality = "", synopsis = "", image = "") {
         // Verificar que no se instancie directamente (clase abstracta)
         if (new.target === Production) {
@@ -88,6 +101,10 @@ class Production{
         this.#image = value;
     }
 
+    /**
+     * Representación en cadena de texto de la producción
+     * @returns {string} Cadena formateada con título, año y nacionalidad
+     */
     toString() {
         return `${this.#title} (${this.#publication.getFullYear()})${this.#nationality ? " - " + this.#nationality : ""}`;
     }

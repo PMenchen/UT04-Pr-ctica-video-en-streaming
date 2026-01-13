@@ -16,10 +16,19 @@ import{
     PersonNotExistsException
 } from "../exceptions.js";
 
+/**
+ * Clase que representa una categoría de contenido
+ * Utilizada para clasificar producciones (películas y series)
+ */
 class Category {
     #name;
     #description;
 
+    /**
+     * Constructor de la clase Category
+     * @param {string} name - Nombre de la categoría (obligatorio)
+     * @param {string} description - Descripción de la categoría (opcional)
+     */
     constructor(name, description = " "){
         if (!name) throw new RequiredValueException("name");
 
@@ -46,6 +55,10 @@ class Category {
         this.#description = value;
     }
 
+    /**
+     * Representación en cadena de texto de la categoría
+     * @returns {string} Cadena formateada con el nombre y descripción
+     */
     toString() {
         return `Categoría: ${this.#name}${this.#description ? " - " + this.#description : ""}`;
     }

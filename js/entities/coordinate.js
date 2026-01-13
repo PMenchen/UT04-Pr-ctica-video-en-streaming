@@ -16,15 +16,28 @@ import{
     PersonNotExistsException
 } from "../exceptions.js";
 
+/**
+ * Clase que representa coordenadas geográficas
+ * Utilizada para almacenar ubicaciones de filmación de producciones
+ */
 class Coordinate {
     #latitude
     #longitude
 
+    /**
+     * Constructor de la clase Coordinate
+     * @param {number} latitude - Latitud (obligatoria)
+     * @param {number} longitude - Longitud (obligatoria)
+     */
     constructor(latitude, longitude) {
+        // Validar que la latitud sea obligatoria
         if (latitude === undefined || latitude === null) throw new RequiredValueException("latitude");
+        // Validar que la latitud sea un número válido
         if (typeof latitude !== "number" || Number.isNaN(latitude)) throw new InvalidValueException("latitude", "number", latitude);
 
+        // Validar que la longitud sea obligatoria
         if (longitude === undefined || longitude === null) throw new RequiredValueException("longitude");
+        // Validar que la longitud sea un número válido
         if (typeof longitude !== "number" || Number.isNaN(longitude)) throw new InvalidValueException("longitude", "number", longitude);
 
         this.#latitude = latitude;
@@ -53,6 +66,10 @@ class Coordinate {
         this.#longitude = value;
     }
 
+    /**
+     * Representación en cadena de texto de las coordenadas
+     * @returns {string} Cadena formateada con latitud y longitud
+     */
     toString() {
         return `Coordenadas: (${this.#latitude}, ${this.#longitude})`;
     }

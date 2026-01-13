@@ -16,11 +16,22 @@ import{
     PersonNotExistsException
 } from "../exceptions.js";
 
+/**
+ * Clase que representa un usuario del sistema
+ * Almacena credenciales de acceso
+ */
 class User {
     #username;
     #email;
     #password;
 
+    
+    /**
+     * Constructor de la clase User
+     * @param {string} username - Nombre de usuario (obligatorio)
+     * @param {string} email - Correo electrónico (obligatorio)
+     * @param {string} password - Contraseña (obligatorio)
+     */
     constructor(username, email, password) {
         if (!username) throw new RequiredValueException("username");
         if (!email) throw new RequiredValueException("email");
@@ -60,6 +71,10 @@ class User {
         this.#password = value;
     }
 
+    /**
+     * Representación en cadena de texto del usuario
+     * @returns {string} Cadena formateada con el nombre de usuario y email
+     */
     toString() {
         return `Usuario: ${this.#username} - (${this.#email})`;
     }
